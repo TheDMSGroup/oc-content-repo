@@ -77,11 +77,12 @@ class GitManager
         $editorName = str_replace("'", '', $editorName);
         $editorEmail = str_replace("'", '', $editorEmail);
         $this->handleExec(
+            "GITCMD add -A && " .
             "GITCMD -c user.name='" . $editorName . "' " .
             "-c user.email='" . $editorEmail . "' " .
             "-c core.whitespace='blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol' " .
             "-c core.autocrlf=false " .
-            "commit -am '" . $action . ' ' . basename($file) . ".'"
+            "commit -m '" . $action . ' ' . basename($file) . ".'"
         );
         return $this;
     }

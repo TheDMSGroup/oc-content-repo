@@ -1,10 +1,10 @@
 <?php namespace TheDMSGrp\CommitContent;
 
 use System\Classes\PluginBase;
-use Cms\Classes\Page;
-use TheDMSGrp\Pages\Classes\Page as StaticPage;
 use TheDMSGrp\CommitContent\Services\GitManager;
-use TheDMSGrp\Offers\Models\Settings;
+use TheDMSGrp\CommitContent\Models\Settings;
+use RainLab\Pages\Classes\Page as StaticPage;
+use Cms\Classes\Page;
 use Event, BackendAuth;
 
 /**
