@@ -5,6 +5,8 @@ use TheDMSGrp\CommitContent\Services\GitManager;
 use TheDMSGrp\CommitContent\Models\Settings;
 use RainLab\Pages\Classes\Page as StaticPage;
 use Cms\Classes\Page;
+use Cms\Widgets\MediaManager;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Event, BackendAuth;
 
 /**
@@ -21,7 +23,7 @@ class Plugin extends PluginBase
     {
         return [
             'name'        => 'CommitContent',
-            'description' => 'This plugin is responsible for committing changes made to a Page/Static Page to a remote content repository.',
+            'description' => 'This plugin is responsible for committing changes made to Pages and Media to a remote content repository.',
             'author'      => 'thedmsgrp',
             'homepage'    => 'https://github.com/TheDMSGroup/commit-content'
         ];
@@ -82,6 +84,34 @@ class Plugin extends PluginBase
             // Delete
             $page->bindEvent('model.afterDelete', function () use ($page) {
                 $this->commitContent('Deleted', $page);
+            });
+        });
+
+        // Media
+        MediaManager::extend(function ($widget) {
+            $widget->bindEvent('folder.delete', function ($path) {
+
+            });
+            $widget->bindEvent('file.delete', function ($path) {
+
+            });
+            $widget->bindEvent('folder.rename', function ($originalPath, $newPath) {
+
+            });
+            $widget->bindEvent('file.rename', function ($originalPath, $newPath) {
+
+            });
+            $widget->bindEvent('folder.create', function ($newFolderPath) {
+
+            });
+            $widget->bindEvent('folder.move', function ($path, $dest) {
+
+            });
+            $widget->bindEvent('file.move', function ($path, $dest) {
+
+            });
+            $widget->bindEvent('file.upload', function ($filePath, UploadedFile $uploadedFile) {
+
             });
         });
     }
