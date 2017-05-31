@@ -7,7 +7,7 @@ use RainLab\Pages\Classes\Page as StaticPage;
 use Cms\Classes\Page;
 use Cms\Widgets\MediaManager;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Event, BackendAuth;
+use Event, BackendAuth, Config;
 
 /**
  * CommitContent Plugin Information File
@@ -89,28 +89,56 @@ class Plugin extends PluginBase
 
         // Media
         MediaManager::extend(function ($widget) {
+
+            // Delete folder
             $widget->bindEvent('folder.delete', function ($path) {
-
+                $this->commitContent('Deleted directory', $path);
             });
+
+            // Delete file
             $widget->bindEvent('file.delete', function ($path) {
+                $mediaClean = Config::get('cms.activeTheme') . '/media'
+                    . str_replace('//', '/', $path);
 
+                $this->deleteMedia('Deleted', $mediaClean);
             });
+
+            // Rename folder
             $widget->bindEvent('folder.rename', function ($originalPath, $newPath) {
-
+                $this->moveMedia($originalPath,
+                    Config::get('cms.activeTheme') . '/media' . str_replace('//', '/', $newPath));
             });
+            
+            // Rename file
             $widget->bindEvent('file.rename', function ($originalPath, $newPath) {
-
+                $this->moveMedia($originalPath,
+                    Config::get('cms.activeTheme') . '/media' . str_replace('//', '/', $newPath),
+                    'file');
             });
+
+            // Create folder
             $widget->bindEvent('folder.create', function ($newFolderPath) {
+                $mediaClean = Config::get('cms.activeTheme') . '/media'
+                    . str_replace('//', '/', $newFolderPath);
 
+                $this->commitContent('Created directory ', $mediaClean, true);
             });
+
+            // Upload file
+            $widget->bindEvent('file.upload', function ($filePath, UploadedFile $uploadedFile) {
+                $mediaClean = Config::get('cms.activeTheme') . '/media'
+                    . str_replace('//', '/', $filePath);
+
+                $this->commitContent('Uploaded', $mediaClean);
+            });
+
+            // Move folder
             $widget->bindEvent('folder.move', function ($path, $dest) {
 
             });
-            $widget->bindEvent('file.move', function ($path, $dest) {
 
-            });
-            $widget->bindEvent('file.upload', function ($filePath, UploadedFile $uploadedFile) {
+            // Move file
+            $widget->bindEvent('file.move', function ($path, $dest) {
 
             });
         });
@@ -172,20 +200,67 @@ class Plugin extends PluginBase
      *
      * @param $action string
      * @param $file string
+     * @param $newFolder boolean
      * @return void
      */
-    private function commitContent($action, $file)
+    private function commitContent($action, $file, $newFolder = false)
     {
         $editor = BackendAuth::getUser();
+
         $gitMgr = new GitManager(
             Settings::get('content_repo'),
             themes_path());
+
+        if ($newFolder) {
+            file_put_contents($file . '/.gitignore', '!.gitignore');
+        }
+
         $gitMgr
-            ->commit(
+            ->commitAll(
                 $editor->first_name . ' ' . $editor->last_name,
                 $editor->email,
                 $action,
-                implode('.', $file->getFileNameParts()))
+                (is_string($file) ? $file : implode('.', $file->getFileNameParts())))
             ->push();
+
+    }
+
+    /**
+     * Deletes media files
+     *
+     * @param $action string
+     * @param $file string
+     * @return void
+     */
+    private function deleteMedia ($action, $file)
+    {
+        $editor = BackendAuth::getUser();
+
+        $gitMgr = new GitManager(
+            Settings::get('content_repo'),
+            themes_path());
+
+        $gitMgr
+            ->removeOne(
+                $editor->first_name . ' ' . $editor->last_name,
+                $editor->email,
+                $action,
+                $file)
+            ->push();
+    }
+
+    /**
+     * Renames or moves media files/folders; essentially a wrapper for commitContent(), but with the ability to create a
+     * more robust commit message.
+     *
+     * @param $original string
+     * @param $new string
+     * @param $type string
+     * @return void
+     */
+    private function moveMedia ($original, $new, $type = 'directory')
+    {
+        $this->commitContent("Renamed $type " . basename($original) . ' to', $new,
+            ($type === 'directory' ? true : false));
     }
 }

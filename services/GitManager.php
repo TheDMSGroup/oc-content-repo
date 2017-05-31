@@ -39,9 +39,13 @@ class GitManager
         $output = false;
 
         if (App::environment('production') || App::environment('stage') || App::environment('staging')) {
-            $git_prefix = 'GIT_SSH_COMMAND="' .
+
+            $git_prefix = '' .
+                'GIT_SSH_COMMAND="' .
                 'ssh -i ' . storage_path('app/' . self::$filePath . '/' . self::$fileName) . ' ' .
-                '-o UserKnownHostsFile=' . storage_path('app/' . self::$filePath . '/known_hosts') . ' -o StrictHostKeyChecking=no"';
+                '-o UserKnownHostsFile=' . storage_path('app/' . self::$filePath . '/known_hosts') . ' ' .
+                '-o StrictHostKeyChecking=no"';
+
             $statement = str_replace('GITCMD', $git_prefix . ' git', $statement);
             Log::info('Git command running: ' . $statement);
             exec($statement, $output, $success);
@@ -49,21 +53,22 @@ class GitManager
             if ($success !== 0) {
                 if (isset($output[2]) && $output[2] == 'nothing to commit, working tree clean') {
                     Log::info('Nothing to commit: ' . $statement, (array) $output);
-                } else {
+                }
+                else {
                     Log::info('Git command failed: ' . $statement, (array) $output);
                     throw new SystemException('Error with git command.  Please try again.');
                 }
-            } else {
+            }
+            else {
                 Log::info('Git command succeeded: ' . $statement, (array) $output);
             }
         }
 
         return $output;
-
     }
 
     /**
-     * Commits all changes to the repository
+     * Commits all changes to the repository.
      *
      * @param $editorName
      * @param $editorEmail
@@ -72,12 +77,39 @@ class GitManager
      *
      * @return current object
      */
-    public function commit($editorName, $editorEmail, $action, $file)
+    public function commitAll($editorName, $editorEmail, $action, $file)
     {
         $editorName = str_replace("'", '', $editorName);
         $editorEmail = str_replace("'", '', $editorEmail);
+
         $this->handleExec(
             "GITCMD add -A && " .
+            "GITCMD -c user.name='" . $editorName . "' " .
+            "-c user.email='" . $editorEmail . "' " .
+            "-c core.whitespace='blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol' " .
+            "-c core.autocrlf=false " .
+            "commit -m '" . $action . ' ' . basename($file) . ".'"
+        );
+        return $this;
+    }
+
+    /**
+     * Created in the same vein as commitAll(), this method commits media deletions one file at a time.
+     *
+     * @param $editorName
+     * @param $editorEmail
+     * @param $action
+     * @param $file
+     *
+     * @return current object
+     */
+    public function removeOne($editorName, $editorEmail, $action, $file)
+    {
+        $editorName = str_replace("'", '', $editorName);
+        $editorEmail = str_replace("'", '', $editorEmail);
+
+        $this->handleExec(
+            "GITCMD rm '" . $file . "' && " .
             "GITCMD -c user.name='" . $editorName . "' " .
             "-c user.email='" . $editorEmail . "' " .
             "-c core.whitespace='blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol' " .
