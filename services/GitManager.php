@@ -35,7 +35,6 @@ class GitManager
      */
     protected function handleExec($statement)
     {
-
         $output = false;
 
         if (App::environment('production') || App::environment('stage') || App::environment('staging')) {
@@ -187,6 +186,7 @@ class GitManager
         if (file_exists('.gitignore')) {
             unlink('.gitignore');
         }
+
         $this->handleExec('GITCMD clone ' . $this->repo . ' .');
         return $this;
     }

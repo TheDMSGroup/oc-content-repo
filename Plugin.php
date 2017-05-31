@@ -105,13 +105,13 @@ class Plugin extends PluginBase
 
             // Rename folder
             $widget->bindEvent('folder.rename', function ($originalPath, $newPath) {
-                $this->moveMedia($originalPath,
+                $this->renameMedia($originalPath,
                     Config::get('cms.activeTheme') . '/media' . str_replace('//', '/', $newPath));
             });
-            
+
             // Rename file
             $widget->bindEvent('file.rename', function ($originalPath, $newPath) {
-                $this->moveMedia($originalPath,
+                $this->renameMedia($originalPath,
                     Config::get('cms.activeTheme') . '/media' . str_replace('//', '/', $newPath),
                     'file');
             });
@@ -134,12 +134,15 @@ class Plugin extends PluginBase
 
             // Move folder
             $widget->bindEvent('folder.move', function ($path, $dest) {
-
+                $this->moveMedia($path,
+                    Config::get('cms.activeTheme') . '/media' . str_replace('//', '/', $dest));
             });
 
             // Move file
             $widget->bindEvent('file.move', function ($path, $dest) {
-
+                $this->moveMedia($path,
+                    Config::get('cms.activeTheme') . '/media' . str_replace('//', '/', $dest),
+                    'file');
             });
         });
     }
@@ -201,9 +204,11 @@ class Plugin extends PluginBase
      * @param $action string
      * @param $file string
      * @param $newFolder boolean
+     * @param $recreate boolean
+     * @param $movedDir string
      * @return void
      */
-    private function commitContent($action, $file, $newFolder = false)
+    private function commitContent($action, $file, $newFolder = false, $recreate = false, $movedDir = '')
     {
         $editor = BackendAuth::getUser();
 
@@ -213,6 +218,10 @@ class Plugin extends PluginBase
 
         if ($newFolder) {
             file_put_contents($file . '/.gitignore', '!.gitignore');
+
+            if ($recreate) {
+                file_put_contents($file . $movedDir . '/.gitignore', '!.gitignore');
+            }
         }
 
         $gitMgr
@@ -222,7 +231,6 @@ class Plugin extends PluginBase
                 $action,
                 (is_string($file) ? $file : implode('.', $file->getFileNameParts())))
             ->push();
-
     }
 
     /**
@@ -258,9 +266,25 @@ class Plugin extends PluginBase
      * @param $type string
      * @return void
      */
-    private function moveMedia ($original, $new, $type = 'directory')
+    private function renameMedia ($original, $new, $type = 'directory')
     {
         $this->commitContent("Renamed $type " . basename($original) . ' to', $new,
             ($type === 'directory' ? true : false));
+    }
+
+    /**
+     * Created in the same vein as renameMedia()
+     *
+     * @param $original string
+     * @param $new string
+     * @param $type string
+     * @return void
+     */
+    private function moveMedia ($original, $new, $type = 'directory')
+    {
+        $this->commitContent("Moved $type " . basename($original) . ' to', $new,
+            ($type === 'directory' ? true : false),
+            ($type === 'directory' ? true : false),
+            $original);
     }
 }
