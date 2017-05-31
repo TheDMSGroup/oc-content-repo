@@ -173,7 +173,7 @@ class GitManager
      */
     public function push()
     {
-        $this->handleExec('GITCMD push origin master --force');
+        $this->handleExec('GITCMD push origin master');
         return $this;
     }
 
