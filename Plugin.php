@@ -7,6 +7,7 @@ use RainLab\Pages\Classes\Page as StaticPage;
 use Cms\Classes\Page;
 use Cms\Widgets\MediaManager;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use RainLab\Pages\Classes\Menu;
 use Event, BackendAuth, Config;
 
 /**
@@ -59,6 +60,21 @@ class Plugin extends PluginBase
      */
     public function boot()
     {
+
+        // Menus
+        Menu::extend(function (Menu $menu) {
+
+            // Modify/Create
+            $menu->bindEvent('model.afterSave', function () use ($menu) {
+                $this->commitContent('Modified', $menu->name);
+            });
+
+            // Delete
+            $menu->bindEvent('model.afterDelete', function () use ($menu) {
+                $this->commitContent('Deleted', $menu->name);
+            });
+        });
+
         // Static Page
         StaticPage::extend(function (StaticPage $page) {
 
