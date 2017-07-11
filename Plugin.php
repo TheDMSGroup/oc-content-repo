@@ -3,11 +3,9 @@
 use System\Classes\PluginBase;
 use TheDMSGrp\CommitContent\Services\GitManager;
 use TheDMSGrp\CommitContent\Models\Settings;
-use RainLab\Pages\Classes\Page as StaticPage;
 use Cms\Classes\Page;
 use Cms\Widgets\MediaManager;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use RainLab\Pages\Classes\Menu;
 use Event, BackendAuth, Config;
 
 /**
@@ -62,32 +60,36 @@ class Plugin extends PluginBase
     {
 
         // Menus
-        Menu::extend(function (Menu $menu) {
+        if (class_exists('\RainLab\Pages\Classes\Menu')) {
+            \RainLab\Pages\Classes\Menu::extend(function (Menu $menu) {
 
-            // Modify/Create
-            $menu->bindEvent('model.afterSave', function () use ($menu) {
-                $this->commitContent('Modified', $menu->name);
-            });
+                // Modify/Create
+                $menu->bindEvent('model.afterSave', function () use ($menu) {
+                    $this->commitContent('Modified', $menu->name);
+                });
 
-            // Delete
-            $menu->bindEvent('model.afterDelete', function () use ($menu) {
-                $this->commitContent('Deleted', $menu->name);
+                // Delete
+                $menu->bindEvent('model.afterDelete', function () use ($menu) {
+                    $this->commitContent('Deleted', $menu->name);
+                });
             });
-        });
+        }
 
         // Static Page
-        StaticPage::extend(function (StaticPage $page) {
+        if (class_exists('\RainLab\Pages\Classes\Page')) {
+            \RainLab\Pages\Classes\Page::extend(function (StaticPage $page) {
 
-            // Modify/Create
-            $page->bindEvent('model.afterSave', function () use ($page) {
-                $this->commitContent('Modified', $page);
-            });
+                // Modify/Create
+                $page->bindEvent('model.afterSave', function () use ($page) {
+                    $this->commitContent('Modified', $page);
+                });
 
-            // Delete
-            $page->bindEvent('model.afterDelete', function () use ($page) {
-                $this->commitContent('Deleted', $page);
+                // Delete
+                $page->bindEvent('model.afterDelete', function () use ($page) {
+                    $this->commitContent('Deleted', $page);
+                });
             });
-        });
+        }
 
         // Page
         Page::extend(function (Page $page) {
