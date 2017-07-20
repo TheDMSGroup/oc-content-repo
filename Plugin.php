@@ -3,8 +3,8 @@
 use System\Classes\PluginBase;
 use TheDMSGrp\CommitContent\Services\GitManager;
 use TheDMSGrp\CommitContent\Models\Settings;
-use Cms\Classes\Page;
 use Cms\Widgets\MediaManager;
+
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Event, BackendAuth, Config;
 
@@ -61,8 +61,7 @@ class Plugin extends PluginBase
 
         // Menus
         if (class_exists('\RainLab\Pages\Classes\Menu')) {
-            \RainLab\Pages\Classes\Menu::extend(function (Menu $menu) {
-
+            \RainLab\Pages\Classes\Menu::extend(function ($menu) {
                 // Modify/Create
                 $menu->bindEvent('model.afterSave', function () use ($menu) {
                     $this->commitContent('Modified', $menu->name);
@@ -77,8 +76,7 @@ class Plugin extends PluginBase
 
         // Static Page
         if (class_exists('\RainLab\Pages\Classes\Page')) {
-            \RainLab\Pages\Classes\Page::extend(function (StaticPage $page) {
-
+            \RainLab\Pages\Classes\Page::extend(function ($page) {
                 // Modify/Create
                 $page->bindEvent('model.afterSave', function () use ($page) {
                     $this->commitContent('Modified', $page);
@@ -92,18 +90,19 @@ class Plugin extends PluginBase
         }
 
         // Page
-        Page::extend(function (Page $page) {
+        if (class_exists('\Cms\Classes\Page')) {
+            \Cms\Classes\Page::extend(function ($page) {
+                // Modify/Create
+                $page->bindEvent('model.afterSave', function () use ($page) {
+                    $this->commitContent('Modified', $page);
+                });
 
-            // Modify/Create
-            $page->bindEvent('model.afterSave', function () use ($page) {
-                $this->commitContent('Modified', $page);
+                // Delete
+                $page->bindEvent('model.afterDelete', function () use ($page) {
+                    $this->commitContent('Deleted', $page);
+                });
             });
-
-            // Delete
-            $page->bindEvent('model.afterDelete', function () use ($page) {
-                $this->commitContent('Deleted', $page);
-            });
-        });
+        }
 
         // Media
         MediaManager::extend(function ($widget) {
