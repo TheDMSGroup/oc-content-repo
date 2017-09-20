@@ -1,0 +1,12 @@
+name: 'Content Repository'
+modelClass: TheDMSGrp\ContentRepo\Models\Repo
+form: $/thedmsgrp/contentrepo/models/repo/fields.yaml
+defaultRedirect: thedmsgrp/contentrepo/repos
+create:
+    title: 'thedmsgrp.contentrepo::lang.contentrepo.create'
+    redirect: 'thedmsgrp/contentrepo/repos/update/:id'
+    redirectClose: thedmsgrp/contentrepo/repos
+update:
+    title: 'thedmsgrp.contentrepo::lang.contentrepo.update'
+    redirect: thedmsgrp/contentrepo/repos
+    redirectClose: thedmsgrp/contentrepo/repos

@@ -1,0 +1,23 @@
+columns:
+    theme:
+        label: theme
+        type: text
+        searchable: true
+        sortable: true
+    url:
+        label: url
+        type: text
+        searchable: true
+        sortable: true
+    updated_at:
+        label: updated_at
+        type: datetime
+        sortable: true
+    deployment_type:
+        label: deployment_type
+        type: text
+        sortable: true
+    branch:
+        label: branch
+        type: text
+        sortable: true

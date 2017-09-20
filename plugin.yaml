@@ -1,0 +1,17 @@
+plugin:
+    name: 'thedmsgrp.contentrepo::lang.plugin.name'
+    description: 'thedmsgrp.contentrepo::lang.plugin.description'
+    author: 'Digital Media Solutions Group'
+    icon: oc-icon-git-square
+    homepage: ''
+permissions:
+    contentrepo:
+        tab: 'thedmsgrp.contentrepo::lang.plugin.name'
+        label: 'thedmsgrp.contentrepo::lang.plugin.name'
+navigation:
+    contentrepo:
+        label: 'thedmsgrp.contentrepo::lang.plugin.name'
+        url: thedmsgrp/contentrepo/repos
+        icon: icon-git-square
+        permissions:
+            - contentrepo

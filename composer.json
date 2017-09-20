@@ -1,0 +1,25 @@
+{
+  "name": "thedmsgrp/commit-content",
+  "type": "october-plugin",
+  "description": "This is a public DMS Group OctoberCMS plugin that is responsible for committing and pushing content changes to a Git repository.",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Brandon Bronisz",
+      "email": "bbronisz@thedmsgrp.com"
+    },
+    {
+      "name": "Mike Petruniak",
+      "email": "mpetruniak@thedmsgrp.com"
+    },
+    {
+      "name": "Heath Dutton",
+      "email": "hdutton@thedmsgrp.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.5.9",
+    "composer/installers": "~1.0",
+    "oomphinc/composer-installers-extender": "^1.1"
+  }
+}

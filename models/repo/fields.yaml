@@ -1,0 +1,95 @@
+tabs:
+    fields:
+        theme:
+            label: Theme
+            oc.commentPosition: ''
+            span: auto
+            type: text
+            tab: Settings
+        url:
+            label: 'Repository URL'
+            oc.commentPosition: ''
+            span: auto
+            type: text
+            tab: Settings
+        branch:
+            label: 'Repository Branch'
+            oc.commentPosition: ''
+            span: auto
+            default: master
+            hidden: 0
+            type: text
+            tab: Settings
+        deployment_type:
+            label: 'Deployment Type'
+            oc.commentPosition: ''
+            options:
+                automatic: 'Automatic - Choose a deployment frequency and have updates deployed by cron tasks.'
+                manual: 'Manual - Choose a specific commit to deploy, then freeze.'
+            span: left
+            required: 1
+            type: radio
+            tab: Settings
+        cron:
+            label: 'Deployment Frequency'
+            oc.commentPosition: ''
+            options:
+                '* * * * *': Immediate
+                '*/5 * * * *': 'Every 5 Minutes'
+                '*/10 * * * *': 'Every 10 Minutes'
+                '*/15 * * * *': 'Every 15 Minutes'
+                '*/30 * * * *': 'Every 30 Minutes'
+                '0 * * * *': 'Every Hour'
+                '0 */3 * * *': 'Every 3 Hours'
+                '0 */6 * * *': 'Every 6 Hours'
+                '0 */12 * * *': 'Every 12 Hours'
+                '0 0 * * *': 'Every Midnight'
+                '0 0 * * 1-5': 'Every Mon-Fri at Midnight'
+                '0 0 * * 0': 'Every Sun at Midnight'
+                '0 0 * * 1': 'Every Mon at Midnight'
+                '0 0 * * 2': 'Every Tue at Midnight'
+                '0 0 * * 3': 'Every Wed at Midnight'
+                '0 0 * * 4': 'Every Thur at Midnight'
+                '0 0 * * 5': 'Every Fri at Midnight'
+                '0 0 * * 6': 'Every Sat at Midnight'
+            span: right
+            hidden: 0
+            trigger:
+                action: show
+                field: deployment_type
+                condition: 'value[automatic]'
+            type: dropdown
+            tab: Settings
+        sha:
+            label: 'Current Commit (SHA)'
+            oc.commentPosition: ''
+            span: left
+            disabled: 1
+            hidden: 0
+            trigger:
+                action: enable
+                field: deployment_type
+                condition: 'value[manual]'
+            type: text
+            tab: Settings
+        private_key:
+            label: 'Private Key'
+            size: large
+            oc.commentPosition: ''
+            span: full
+            type: textarea
+            tab: 'Security / Credentials'
+        public_key:
+            label: PublicKey
+            size: large
+            oc.commentPosition: ''
+            span: full
+            type: textarea
+            tab: 'Security / Credentials'
+        known_hosts:
+            label: 'Known Hosts'
+            size: large
+            oc.commentPosition: ''
+            span: full
+            type: textarea
+            tab: 'Security / Credentials'

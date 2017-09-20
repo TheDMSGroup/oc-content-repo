@@ -1,0 +1,12 @@
+title: 'thedmsgrp.contentrepo::lang.contentrepo.repos'
+modelClass: TheDMSGrp\ContentRepo\Models\Repo
+list: $/thedmsgrp/contentrepo/models/repo/columns.yaml
+recordUrl: 'thedmsgrp/contentrepo/repos/update/:id'
+noRecordsMessage: 'backend::lang.list.no_records'
+recordsPerPage: '100'
+showSetup: true
+showSorting: 1
+toolbar:
+    buttons: list_toolbar
+    search:
+        prompt: 'backend::lang.list.search_prompt'
