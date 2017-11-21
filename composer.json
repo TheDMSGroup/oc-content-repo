@@ -1,5 +1,5 @@
 {
-  "name": "thedmsgrp/content-repo",
+  "name": "thedmsgrp/contentrepo",
   "type": "october-plugin",
   "description": "Keeps a theme and content in a repository for easy versioning and high-performance deployments.",
   "homepage": "https://github.com/thedmsgrp/oc-content-repo",
