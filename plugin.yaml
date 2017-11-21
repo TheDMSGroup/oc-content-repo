@@ -3,7 +3,7 @@ plugin:
     description: 'thedmsgrp.contentrepo::lang.plugin.description'
     author: 'Digital Media Solutions Group'
     icon: oc-icon-git-square
-    homepage: ''
+    homepage: 'https://github.com/thedmsgroup/oc-content-repo'
 permissions:
     contentrepo:
         tab: 'thedmsgrp.contentrepo::lang.plugin.name'
