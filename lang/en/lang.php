@@ -1,6 +1,6 @@
 <?php return [
     'plugin' => [
-        'name' => 'Commit Content',
+        'name' => 'Content Repo',
         'description' => '',
     ],
     'contentrepo_permission' => 'Can edit Commit Content settings and Deploy content changes to production',

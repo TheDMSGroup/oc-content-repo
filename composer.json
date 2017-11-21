@@ -1,7 +1,7 @@
 {
-  "name": "thedmsgrp/commit-content",
+  "name": "thedmsgrp/oc-content-repo",
   "type": "october-plugin",
-  "description": "This is a public DMS Group OctoberCMS plugin that is responsible for committing and pushing content changes to a Git repository.",
+  "description": "Keeps a theme and content in a repository for easy versioning and high-performance deployments.",
   "license": "MIT",
   "authors": [
     {

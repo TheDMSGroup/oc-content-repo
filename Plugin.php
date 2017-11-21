@@ -1,15 +1,15 @@
 <?php namespace TheDMSGrp\ContentRepo;
 
 use System\Classes\PluginBase;
-use TheDMSGrp\CommitContent\Services\GitManager;
-use TheDMSGrp\CommitContent\Models\Settings;
+use TheDMSGrp\ContentRepo\Services\GitManager;
+use TheDMSGrp\ContentRepo\Models\Settings;
 use Cms\Widgets\MediaManager;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Event, BackendAuth, Config;
 
 /**
- * CommitContent Plugin Information File
+ * ContentRepo Plugin Information File
  */
 class Plugin extends PluginBase
 {
@@ -21,10 +21,10 @@ class Plugin extends PluginBase
     public function pluginDetails()
     {
         return [
-            'name'        => 'CommitContent',
-            'description' => 'This plugin is responsible for committing changes made to Pages and Media to a remote content repository.',
+            'name'        => 'Content Repo',
+            'description' => 'Keeps a theme and content in a repository for easy versioning and high-performance deployments.',
             'author'      => 'thedmsgrp',
-            'homepage'    => 'https://github.com/TheDMSGroup/commit-content'
+            'homepage'    => 'https://github.com/TheDMSGroup/oc-content-repo'
         ];
     }
 
@@ -45,10 +45,10 @@ class Plugin extends PluginBase
      */
     public function register()
     {
-        $this->registerConsoleCommand('content:clone', 'TheDMSGrp\CommitContent\Console\ContentClone');
-        $this->registerConsoleCommand('content:pull', 'TheDMSGrp\CommitContent\Console\ContentPull');
-        $this->registerConsoleCommand('content:ssh:install', 'TheDMSGrp\CommitContent\Console\ContentInstallKey');
-        $this->registerConsoleCommand('content:checkout', 'TheDMSGrp\CommitContent\Console\ContentCheckout');
+        $this->registerConsoleCommand('content:clone', 'TheDMSGrp\ContentRepo\Console\ContentClone');
+        $this->registerConsoleCommand('content:pull', 'TheDMSGrp\ContentRepo\Console\ContentPull');
+        $this->registerConsoleCommand('content:ssh:install', 'TheDMSGrp\ContentRepo\Console\ContentInstallKey');
+        $this->registerConsoleCommand('content:checkout', 'TheDMSGrp\ContentRepo\Console\ContentCheckout');
     }
 
     /**
@@ -64,12 +64,12 @@ class Plugin extends PluginBase
             \RainLab\Pages\Classes\Menu::extend(function ($menu) {
                 // Modify/Create
                 $menu->bindEvent('model.afterSave', function () use ($menu) {
-                    $this->commitContent('Modified', $menu->name);
+                    $this->ContentRepo('Modified', $menu->name);
                 });
 
                 // Delete
                 $menu->bindEvent('model.afterDelete', function () use ($menu) {
-                    $this->commitContent('Deleted', $menu->name);
+                    $this->ContentRepo('Deleted', $menu->name);
                 });
             });
         }
@@ -79,12 +79,12 @@ class Plugin extends PluginBase
             \RainLab\Pages\Classes\Page::extend(function ($page) {
                 // Modify/Create
                 $page->bindEvent('model.afterSave', function () use ($page) {
-                    $this->commitContent('Modified', $page);
+                    $this->ContentRepo('Modified', $page);
                 });
 
                 // Delete
                 $page->bindEvent('model.afterDelete', function () use ($page) {
-                    $this->commitContent('Deleted', $page);
+                    $this->ContentRepo('Deleted', $page);
                 });
             });
         }
@@ -94,12 +94,12 @@ class Plugin extends PluginBase
             \Cms\Classes\Page::extend(function ($page) {
                 // Modify/Create
                 $page->bindEvent('model.afterSave', function () use ($page) {
-                    $this->commitContent('Modified', $page);
+                    $this->ContentRepo('Modified', $page);
                 });
 
                 // Delete
                 $page->bindEvent('model.afterDelete', function () use ($page) {
-                    $this->commitContent('Deleted', $page);
+                    $this->ContentRepo('Deleted', $page);
                 });
             });
         }
@@ -109,7 +109,7 @@ class Plugin extends PluginBase
 
             // Delete folder
             $widget->bindEvent('folder.delete', function ($path) {
-                $this->commitContent('Deleted directory', $path);
+                $this->ContentRepo('Deleted directory', $path);
             });
 
             // Delete file
@@ -138,7 +138,7 @@ class Plugin extends PluginBase
                 $mediaClean = Config::get('cms.activeTheme') . '/media'
                     . str_replace('//', '/', $newFolderPath);
 
-                $this->commitContent('Created directory ', $mediaClean, true);
+                $this->ContentRepo('Created directory ', $mediaClean, true);
             });
 
             // Upload file
@@ -146,7 +146,7 @@ class Plugin extends PluginBase
                 $mediaClean = Config::get('cms.activeTheme') . '/media'
                     . str_replace('//', '/', $filePath);
 
-                $this->commitContent('Uploaded', $mediaClean);
+                $this->ContentRepo('Uploaded', $mediaClean);
             });
 
             // Move folder
@@ -207,7 +207,7 @@ class Plugin extends PluginBase
                 'description' => 'Configure content settings.',
                 'category'    => 'Content',
                 'icon'        => 'icon-cog',
-                'class'       => 'TheDMSGrp\CommitContent\Models\Settings',
+                'class'       => 'TheDMSGrp\ContentRepo\Models\Settings',
                 'order'       => 500,
                 'keywords'    => 'content configure',
                 'permissions' => ['thedmsgrp.content.generalaccess']
@@ -225,7 +225,7 @@ class Plugin extends PluginBase
      * @param $movedDir string
      * @return void
      */
-    private function commitContent($action, $file, $newFolder = false, $recreate = false, $movedDir = '')
+    private function ContentRepo($action, $file, $newFolder = false, $recreate = false, $movedDir = '')
     {
         $editor = BackendAuth::getUser();
 
@@ -275,7 +275,7 @@ class Plugin extends PluginBase
     }
 
     /**
-     * Renames or moves media files/folders; essentially a wrapper for commitContent(), but with the ability to create a
+     * Renames or moves media files/folders; essentially a wrapper for ContentRepo(), but with the ability to create a
      * more robust commit message.
      *
      * @param $original string
@@ -285,7 +285,7 @@ class Plugin extends PluginBase
      */
     private function renameMedia ($original, $new, $type = 'directory')
     {
-        $this->commitContent("Renamed $type " . basename($original) . ' to', $new,
+        $this->ContentRepo("Renamed $type " . basename($original) . ' to', $new,
             ($type === 'directory' ? true : false));
     }
 
@@ -299,7 +299,7 @@ class Plugin extends PluginBase
      */
     private function moveMedia ($original, $new, $type = 'directory')
     {
-        $this->commitContent("Moved $type " . basename($original) . ' to', $new,
+        $this->ContentRepo("Moved $type " . basename($original) . ' to', $new,
             ($type === 'directory' ? true : false),
             ($type === 'directory' ? true : false),
             $original);

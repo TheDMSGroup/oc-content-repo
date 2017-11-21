@@ -1,8 +1,8 @@
-<?php namespace TheDMSGrp\CommitContent\Console;
+<?php namespace TheDMSGrp\ContentRepo\Console;
 
 use Illuminate\Console\Command;
-use TheDMSGrp\CommitContent\Models\Settings;
-use TheDMSGrp\CommitContent\Services\GitManager;
+use TheDMSGrp\ContentRepo\Models\Settings;
+use TheDMSGrp\ContentRepo\Services\GitManager;
 use Symfony\Component\Console\Input\InputArgument;
 
 class ContentCheckout extends Command

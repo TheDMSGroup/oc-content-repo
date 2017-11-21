@@ -1,6 +1,6 @@
 <?php
 
-namespace TheDMSGrp\CommitContent\Services;
+namespace TheDMSGrp\ContentRepo\Services;
 
 use October\Rain\Exception\SystemException;
 use Flash, Log, App;
@@ -8,12 +8,12 @@ use Flash, Log, App;
 /**
  * Class GitManager
  *
- * @package TheDMSGrp\CommitContent\Services
+ * @package TheDMSGrp\ContentRepo\Services
  */
 class GitManager
 {
 
-    public static $fileName = 'commitcontent';
+    public static $fileName = 'ContentRepo';
     public static $filePath = 'uploads/protected/.ssh';
     protected $repo;
     protected $path;
