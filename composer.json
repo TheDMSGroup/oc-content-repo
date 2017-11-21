@@ -1,7 +1,9 @@
 {
-  "name": "thedmsgrp/oc-content-repo",
+  "name": "thedmsgrp/content-repo",
   "type": "october-plugin",
   "description": "Keeps a theme and content in a repository for easy versioning and high-performance deployments.",
+  "homepage": "https://github.com/thedmsgrp/oc-content-repo",
+  "keywords": ["october", "octobercms", "content", "repo"],
   "license": "MIT",
   "authors": [
     {
