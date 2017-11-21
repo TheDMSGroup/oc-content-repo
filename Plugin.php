@@ -22,9 +22,10 @@ class Plugin extends PluginBase
     {
         return [
             'name'        => 'Content Repo',
-            'description' => 'Keeps a theme and content in a repository for easy versioning and high-performance deployments.',
-            'author'      => 'thedmsgrp',
-            'homepage'    => 'https://github.com/TheDMSGroup/oc-content-repo'
+            'description' => 'Keeps a themes and content in a repositories.',
+            'author'      => 'TheDMSGrp',
+            'icon'        => 'icon-git-square',
+            'homepage'    => 'https://github.com/TheDMSGroup/oc-content-repo',
         ];
     }
 

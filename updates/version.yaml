@@ -2,25 +2,4 @@
     - 'Initialize plugin.'
 1.0.2:
     - 'Created table thedmsgrp_contentrepo_repos'
-    - builder_table_create_thedmsgrp_contentrepo_repos.php
-1.0.3:
-    - 'Updated table thedmsgrp_contentrepo_repos'
-    - builder_table_update_thedmsgrp_contentrepo_repos.php
-1.0.4:
-    - 'Updated table thedmsgrp_contentrepo_repos'
-    - builder_table_update_thedmsgrp_contentrepo_repos_2.php
-1.0.5:
-    - 'Updated table thedmsgrp_contentrepo_repos'
-    - builder_table_update_thedmsgrp_contentrepo_repos_3.php
-1.0.6:
-    - 'Updated table thedmsgrp_contentrepo_repos'
-    - builder_table_update_thedmsgrp_contentrepo_repos_4.php
-1.0.7:
-    - 'Updated table thedmsgrp_contentrepo_repos'
-    - builder_table_update_thedmsgrp_contentrepo_repos_5.php
-1.0.8:
-    - 'Updated table thedmsgrp_contentrepo_repos'
-    - builder_table_update_thedmsgrp_contentrepo_repos_6.php
-1.0.9:
-    - 'Updated table thedmsgrp_contentrepo_repos'
-    - builder_table_update_thedmsgrp_contentrepo_repos_7.php
+    - create_thedmsgrp_contentrepo_repos.php
