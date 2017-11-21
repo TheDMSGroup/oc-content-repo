@@ -9,9 +9,9 @@ permissions:
         tab: 'thedmsgrp.contentrepo::lang.plugin.name'
         label: 'thedmsgrp.contentrepo::lang.plugin.name'
 navigation:
-    contentrepo:
+    contentrepos:
         label: 'thedmsgrp.contentrepo::lang.plugin.name'
-        url: thedmsgrp/contentrepo/repos
+        url: /thedmsgrp/contentrepo/repos
         icon: icon-git-square
         permissions:
             - contentrepo

@@ -181,16 +181,6 @@ class Plugin extends PluginBase
     }
 
     /**
-     * Registers back-end navigation items for this plugin.
-     *
-     * @return array
-     */
-    public function registerNavigation()
-    {
-        return [];
-    }
-
-    /**
      * @param string $schedule
      */
     public function registerSchedule($schedule)

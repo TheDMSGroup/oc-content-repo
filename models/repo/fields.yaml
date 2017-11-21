@@ -24,8 +24,9 @@ tabs:
             label: 'Deployment Type'
             oc.commentPosition: ''
             options:
-                automatic: 'Automatic - Choose a deployment frequency and have updates deployed by cron tasks.'
+                automated: 'Automated - Choose a deployment frequency and have updates deployed by cron tasks.'
                 manual: 'Manual - Choose a specific commit to deploy, then freeze.'
+            default: automated
             span: left
             required: 1
             type: radio
@@ -57,7 +58,7 @@ tabs:
             trigger:
                 action: show
                 field: deployment_type
-                condition: 'value[automatic]'
+                condition: 'value[automated]'
             type: dropdown
             tab: Settings
         sha:

@@ -6,7 +6,7 @@ use BackendMenu;
 class Repos extends Controller
 {
     public $implement = ['Backend\Behaviors\ListController','Backend\Behaviors\FormController'];
-    
+
     public $listConfig = 'config_list.yaml';
     public $formConfig = 'config_form.yaml';
 
@@ -17,6 +17,6 @@ class Repos extends Controller
     public function __construct()
     {
         parent::__construct();
-        BackendMenu::setContext('thedmsgrp.contentrepo', 'contentrepo');
+        BackendMenu::setContext('thedmsgrp.contentrepo', 'main-menu-item', 'side-menu-item');
     }
 }

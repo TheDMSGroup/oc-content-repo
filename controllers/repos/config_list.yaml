@@ -1,7 +1,7 @@
 title: 'thedmsgrp.contentrepo::lang.contentrepo.repos'
 modelClass: TheDMSGrp\ContentRepo\Models\Repo
 list: $/thedmsgrp/contentrepo/models/repo/columns.yaml
-recordUrl: 'thedmsgrp/contentrepo/repos/update/:id'
+recordUrl: thedmsgrp/contentrepo/repos
 noRecordsMessage: 'backend::lang.list.no_records'
 recordsPerPage: '100'
 showSetup: true
